@@ -20,7 +20,7 @@ const Product = new mongoose.Schema({
   },
   countCartUser: {
     type: Number,
-    default: 1
+    default: 0
   },
   selling: {
     type: Number,

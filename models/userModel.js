@@ -19,7 +19,7 @@ const UserModel = new mongoose.Schema({
   },
   email: String,
   password: String,
-  avatar: String,
+  image: String,
   permission: {
     type: Number,
     default: 1

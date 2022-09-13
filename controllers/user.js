@@ -4,14 +4,36 @@ const CryptoJS = require('crypto-js')
 
 module.exports = {
   update: (req, res) => {
-    const { password } = req.body
+    const { _id, phone, password } = req.body
     co(function* () {
-      req.body.password = CryptoJS.AES.encrypt(
-        password,
-        process.env.PASSWORD_SECRET_KEY
-      ).toString()
-      const users = yield User.findByIdAndUpdate({_id: req.body._id}, req.body)
+      const isExistsPhone = yield User.findOne({ phone: phone }).select('phone')
+      const user = yield User.findOne({ _id: _id })
+      if (isExistsPhone && isExistsPhone._id != _id) {
+        return Promise.reject({
+          errors: [{
+            param: 'phone',
+            msg: 'Số điện thoại này đã được sử dụng',
+          }]
+        })
+      }
+      
+      if (user.password !== password) {
+        req.body.password = CryptoJS.AES.encrypt(
+          password,
+          process.env.PASSWORD_SECRET_KEY
+        ).toString()
+      }
+      const users = yield User.findByIdAndUpdate({_id: _id}, req.body)
       return users
+    })
+    .then(data => res.status(200).json(data))
+    .catch(err => res.status(500).json(err))
+  },
+  updateAvatar: (req, res) => {
+    const { UID, image } = req.body
+    co(function* () {
+      const user = yield User.findByIdAndUpdate({ _id: UID }, { image: image })
+      return user
     })
     .then(data => res.status(200).json(data))
     .catch(err => res.status(500).json(err))
