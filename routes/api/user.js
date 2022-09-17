@@ -2,7 +2,6 @@ const validation = require('../../handlers/validation')
 const userController = require('../../controllers/user')
 const router = require('express').Router()
 const { body } = require('express-validator')
-const userModel = require('../../models/userModel')
 
 // get all users
 router.get(
@@ -39,6 +38,41 @@ router.post(
   '/delete',
   validation,
   userController.delete
+)
+
+// user feedback
+router.post(
+  '/feedback',
+  validation,
+  userController.feedback
+)
+
+// user feedback update
+router.put(
+  '/feedback/update',
+  validation,
+  userController.updateFeedback
+)
+
+// get all feedback
+router.get(
+  '/get_feedback',
+  validation,
+  userController.getAllFeedback
+)
+
+// create notification
+router.post(
+  '/notification/create',
+  validation,
+  userController.createNotification
+)
+
+//get user
+router.post(
+  '/:id',
+  validation,
+  userController.get,
 )
 
 module.exports = router

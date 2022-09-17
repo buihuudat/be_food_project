@@ -10,14 +10,17 @@ module.exports = {
     .then(data => res.status(201).json(data))
     .catch(err => res.status(500).json(err))
   },
+
   update: (req, res) => {
+    console.log(req.body);
     co(function* () {
-      const product = yield Product.findByIdAndUpdate({_id: req.body.id}, req.body)
+      const product = yield Product.findByIdAndUpdate({_id: req.body._id}, req.body)
       return product
     })
     .then(data => res.status(200).json(data))
     .catch(err => res.status(500).json(err))
   },
+
   delete: (req, res) => {
     co(function* () {
       yield Product.findByIdAndDelete({_id: req.body._id})
