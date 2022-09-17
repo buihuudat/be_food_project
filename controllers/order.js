@@ -40,7 +40,6 @@ module.exports = {
   
   get: (req, res) => {
     const { id } = req.params
-    console.log(id);
     co(function* () {
       const order = yield UserOrder.findOne({ user: id })
       return order

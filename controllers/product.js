@@ -12,7 +12,6 @@ module.exports = {
   },
 
   update: (req, res) => {
-    console.log(req.body);
     co(function* () {
       const product = yield Product.findByIdAndUpdate({_id: req.body._id}, req.body)
       return product
