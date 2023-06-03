@@ -1,5 +1,6 @@
 const co = require("co");
 const User = require("../models/userModel");
+const Order = require("../models/user_order");
 const User_feedback = require("../models/user_feedback");
 const Notification = require("../models/notification");
 const CryptoJS = require("crypto-js");
@@ -44,10 +45,17 @@ module.exports = {
       .then((data) => res.status(200).json(data))
       .catch((err) => res.status(500).json(err));
   },
+
+  // handle delete user
+  // delete user => del user + user order
   delete: (req, res) => {
     co(function* () {
       yield User.deleteMany({ _id: { $in: req.body } });
-      const users = User.find();
+      const [, , users] = yield Promise.all([
+        User.deleteMany({ _id: { $in: req.body } }),
+        Order.deleteMany({ user: { $in: req.body } }),
+        User.find(),
+      ]);
       return users;
     })
       .then((data) => res.status(200).json(data))
