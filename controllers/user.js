@@ -65,7 +65,7 @@ module.exports = {
     co(function* () {
       const { id } = req.params;
       const user = yield User.findById({ _id: id }).select(
-        "fullname phone address"
+        "fullname phone address image"
       );
       return user;
     })
