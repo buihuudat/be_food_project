@@ -31,6 +31,7 @@ module.exports = {
         {
           $set: {
             "products.$.status": req.body.status,
+            "products.$.reason": req.body.reason,
           },
         }
       );

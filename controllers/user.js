@@ -75,14 +75,6 @@ module.exports = {
   getAll: (req, res) => {
     co(function* () {
       const users = yield User.find();
-      const passwords = yield User.find().select("password");
-      passwords.map((pass, i) => {
-        const decryptedPass = CryptoJS.AES.decrypt(
-          pass.password,
-          process.env.PASSWORD_SECRET_KEY
-        ).toString(CryptoJS.enc.Utf8);
-        users[i].password = decryptedPass;
-      });
       return users;
     })
       .then((data) => res.status(200).json(data))
